@@ -194,7 +194,7 @@
                 <li>4 MiB accumulators, software-managed.</li>
                 <li><strong>8 GiB dual-channel DDR3-2133 at ~34 GB/s</strong> &mdash; the bandwidth wall the paper makes famous.</li>
                 <li>PCIe Gen3 &times;16 host link.</li>
-                <li>40 W max TDP. Drop-in to existing servers.</li>
+                <li>75 W TDP (~40 W busy). Drop-in to existing servers.</li>
             </ul>
         </div>
     </div>
@@ -313,11 +313,11 @@
             <ul>
                 <li><strong>Two TensorCores</strong>, 4 MXUs each, plus <strong>4 SparseCores</strong>.</li>
                 <li><strong>459 TFLOPS bf16</strong>, <strong>918 TOPS INT8</strong> per chip.</li>
-                <li><strong>95 GiB HBM</strong> at 2.76 TB/s &mdash; almost 3&times; the bandwidth of v5e.</li>
+                <li><strong>95 GiB HBM</strong> at 2.76 TB/s &mdash; ~3.4&times; the bandwidth of v5e.</li>
                 <li>ICI: <strong>4,800 Gbps per chip</strong> (600 GB/s per direction).</li>
                 <li><strong>3D torus + OCS</strong>, <strong>8,960-chip pod</strong>; max single-job slice 6,144 chips.</li>
-                <li>Used to train <strong>Gemini 1.0 and Gemini 1.5</strong>.</li>
-                <li>Pod aggregate: ~4.1 ExaFLOPS bf16, ~850 TiB aggregate HBM.</li>
+                <li>Announced alongside Gemini 1.0 (which itself trained on TPU v4 and v5e; Gemini 1.5 on TPU v4 pods).</li>
+                <li>Pod aggregate: ~4.1 ExaFLOPS bf16, ~830 TiB aggregate HBM.</li>
             </ul>
         </div>
     </div>
@@ -370,7 +370,7 @@
             <ul>
                 <li><strong>4,614 TFLOPS FP8</strong> (= 4.6 PFLOPS) per chip.</li>
                 <li><strong>2,307 TFLOPS bf16</strong> (half of FP8, as expected from the format).</li>
-                <li>~5&times; Trillium's bf16 / FP8 throughput.</li>
+                <li>~2.5&times; Trillium on bf16 (~5&times; only if Ironwood FP8 is set against Trillium bf16).</li>
             </ul>
         </div>
         <div class="diagram-panel y">
@@ -535,9 +535,9 @@
                 <tr><td>v1</td><td>1</td><td>n/a (PCIe card)</td><td>92 TOPS INT8</td><td>8 GiB DDR3</td></tr>
                 <tr><td>v2</td><td>256</td><td>16&times;16 2D torus</td><td>~11.5 PFLOPS bf16</td><td>4 TiB</td></tr>
                 <tr><td>v3</td><td>1,024</td><td>32&times;32 2D torus</td><td>~126 PFLOPS bf16</td><td>32 TiB</td></tr>
-                <tr><td>v4</td><td>4,096</td><td>4&times;4&times;4 of 8&times;8&times;8 cubes (3D)</td><td>~1.1 ExaFLOPS bf16</td><td>128 TiB</td></tr>
+                <tr><td>v4</td><td>4,096</td><td>64 cubes of 4&times;4&times;4 (up to 16&times;16&times;16, 3D)</td><td>~1.1 ExaFLOPS bf16</td><td>128 TiB</td></tr>
                 <tr><td>v5e</td><td>256</td><td>16&times;16 2D torus</td><td>~50 PFLOPS bf16</td><td>4 TiB</td></tr>
-                <tr><td>v5p</td><td>8,960</td><td>3D torus + OCS</td><td>~4.1 ExaFLOPS bf16</td><td>~850 TiB</td></tr>
+                <tr><td>v5p</td><td>8,960</td><td>3D torus + OCS</td><td>~4.1 ExaFLOPS bf16</td><td>~830 TiB</td></tr>
                 <tr><td>Trillium (v6e)</td><td>256</td><td>2D torus (multipod up to ~100k via Jupiter)</td><td>~235 PFLOPS bf16</td><td>8 TiB</td></tr>
                 <tr><td>Ironwood (v7)</td><td>9,216</td><td>3D torus + OCS</td><td><strong>~42.5 ExaFLOPS FP8</strong></td><td>~1.7 PiB HBM3e</td></tr>
             </tbody>
@@ -640,7 +640,7 @@
         <li><strong>v4 (2020):</strong> 7 nm, 8 MXUs/chip, 275 TFLOPS bf16, 4096-chip 3D-torus pod with Palomar OCS, SparseCore. PaLM trained on 6,144 chips.</li>
         <li><strong>v4i (2020):</strong> Single-TensorCore inference variant; CMEM introduced.</li>
         <li><strong>v5e (Aug 2023):</strong> e-class. 197 TFLOPS bf16, 16 GiB HBM, 256-chip 2D-torus pod.</li>
-        <li><strong>v5p (Dec 2023):</strong> p-class. 459 TFLOPS bf16, 95 GiB HBM, 8,960-chip 3D-torus pod. Gemini 1/1.5 trained here.</li>
+        <li><strong>v5p (Dec 2023):</strong> p-class. 459 TFLOPS bf16, 95 GiB HBM, 8,960-chip 3D-torus pod.</li>
         <li><strong>Trillium (v6e, May 2024):</strong> e-class. 918 TFLOPS bf16, 32 GiB HBM, 3rd-gen SparseCore. Gemini 2.0 trained here.</li>
         <li><strong>Ironwood (v7 / TPU7x, Apr 2025 / GA Nov 2025):</strong> p-class inference flagship. 4.6 PFLOPS FP8, 192 GiB HBM3e, 9,216-chip pod, 42.5 ExaFLOPS aggregate.</li>
         <li><strong>The product fork:</strong> from v5 onward, e-class (2D torus, 256-chip pods, cost-optimised) and p-class (3D torus + OCS, kilo-chip pods, frontier training).</li>
